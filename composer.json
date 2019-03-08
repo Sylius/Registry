@@ -26,7 +26,8 @@
         "zendframework/zend-stdlib": "^3.1"
     },
     "require-dev": {
-        "phpspec/phpspec": "^5.0"
+        "phpspec/phpspec": "^5.0",
+        "sylius-labs/coding-standard": "^3.0"
     },
     "autoload": {
         "psr-4": { "Sylius\\Component\\Registry\\": "src/" }
