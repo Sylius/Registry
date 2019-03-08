@@ -29,10 +29,10 @@
         "phpspec/phpspec": "^5.0"
     },
     "autoload": {
-        "psr-4": { "Sylius\\Component\\Registry\\": "" }
+        "psr-4": { "Sylius\\Component\\Registry\\": "src/" }
     },
     "autoload-dev": {
-        "psr-4": { "Sylius\\Component\\Registry\\spec\\": "spec/" }
+        "psr-4": { "spec\\Sylius\\Component\\Registry\\": "spec/" }
     },
     "extra": {
         "branch-alias": {
