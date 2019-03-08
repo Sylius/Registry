@@ -27,6 +27,8 @@
     },
     "require-dev": {
         "phpspec/phpspec": "^5.0",
+        "phpstan/phpstan-shim": "^0.10",
+        "proget-hq/phpstan-phpspec": "^0.1.1",
         "sylius-labs/coding-standard": "^3.0"
     },
     "autoload": {
@@ -34,6 +36,11 @@
     },
     "autoload-dev": {
         "psr-4": { "spec\\Sylius\\Component\\Registry\\": "spec/" }
+    },
+    "scripts": {
+        "analyse": [
+            "@php vendor/bin/phpstan analyse --ansi -c phpstan.neon -l max spec src"
+        ]
     },
     "extra": {
         "branch-alias": {
