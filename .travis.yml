@@ -17,4 +17,6 @@ install:
 script:
     - composer validate --strict
 
+    - composer analyse
+
     - vendor/bin/phpspec run
