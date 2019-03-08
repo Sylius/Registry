@@ -1,45 +1,26 @@
-Registry Component [![Build status...](https://secure.travis-ci.org/Sylius/Registry.png?branch=master)](http://travis-ci.org/Sylius/Registry)
-==================
+<p align="center">
+    <a href="https://sylius.com" target="_blank">
+        <img src="https://demo.sylius.com/assets/shop/img/logo.png" />
+    </a>
+</p>
 
-Sylius
-------
+<h1 align="center">Theme Bundle</h1>
 
-![Sylius](https://demo.sylius.com/assets/shop/img/logo.png)
+<p align="center">Registry for services.</p>
 
-Sylius is an Open Source eCommerce solution built from decoupled components with powerful API and the highest quality code. [Read more on sylius.com](http://sylius.com).
+## Documentation
 
-Documentation
--------------
+[Documentation is available in the *docs* folder.](docs/index.md)
 
-Documentation is available on [**docs.sylius.com**](http://docs.sylius.com/en/latest/components_and_bundles/components/Registry/index.html).
+## Security issues
 
-Contributing
-------------
+Please use `security@sylius.com` email to report security issues.
 
-[This page](http://docs.sylius.com/en/latest/contributing/index.html) contains all the information about contributing to Sylius.
+## License
 
-Follow Sylius' Development
---------------------------
+[This bundle uses MIT License.](LICENSE)
 
-If you want to keep up with the updates and latest features, follow us on the following channels:
+## Authors
 
-* [Official Blog](https://sylius.com/blog)
-* [Sylius on Twitter](https://twitter.com/Sylius)
-* [Sylius on Facebook](https://facebook.com/SyliusEcommerce)
-
-Bug tracking
-------------
-
-Sylius uses [GitHub issues](https://github.com/Sylius/Sylius/issues).
-If you have found bug, please create an issue.
-
-MIT License
------------
-
-License can be found [here](https://github.com/Sylius/Sylius/blob/master/LICENSE).
-
-Authors
--------
-
-The component was originally created by [Paweł Jędrzejewski](http://pjedrzejewski.com).
+The bundle was originally created by [Paweł Jędrzejewski](http://pjedrzejewski.com).
 See the list of [contributors](https://github.com/Sylius/Registry/contributors).
