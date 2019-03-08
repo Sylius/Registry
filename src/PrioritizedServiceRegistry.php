@@ -47,7 +47,9 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
      */
     public function all(): iterable
     {
-        return $this->services;
+        foreach ($this->services as $service) {
+            yield $service;
+        }
     }
 
     /**

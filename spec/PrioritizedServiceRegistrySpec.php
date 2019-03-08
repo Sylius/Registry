@@ -19,7 +19,6 @@ use PhpSpec\ObjectBehavior;
 use spec\Sylius\Component\Registry\Fixture\SampleServiceInterface;
 use Sylius\Component\Registry\NonExistingServiceException;
 use Sylius\Component\Registry\PrioritizedServiceRegistryInterface;
-use Zend\Stdlib\PriorityQueue;
 
 final class PrioritizedServiceRegistrySpec extends ObjectBehavior
 {
@@ -35,9 +34,7 @@ final class PrioritizedServiceRegistrySpec extends ObjectBehavior
 
     function it_initializes_services_priority_queue_by_default(): void
     {
-        $this->all()->shouldReturnAnInstanceOf(PriorityQueue::class);
-
-        $this->all()->shouldBeEmpty();
+        $this->all()->shouldIterateAs([]);
     }
 
     function it_registers_services_in_the_correct_prioritized_order(
@@ -58,9 +55,7 @@ final class PrioritizedServiceRegistrySpec extends ObjectBehavior
         $this->has($serviceThree)->shouldReturn(true);
 
         $this->all()->shouldHaveCount(3);
-        $this->all()->shouldHavePriority(1);
-        $this->all()->shouldHavePriority(0);
-        $this->all()->shouldHavePriority(-1);
+        $this->all()->shouldIterateAs([$serviceThree, $serviceOne, $serviceTwo]);
     }
 
     function it_throws_exception_when_trying_to_register_service_without_required_interface(\stdClass $service): void
