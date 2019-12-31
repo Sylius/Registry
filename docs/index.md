@@ -5,12 +5,12 @@ Simple registry component useful for all types of applications.
 ## Installation
 
 ```bash
-composer require sylius/theme-bundle
+composer require sylius/registry
 ```
 
 ## Basic usage
 
-A registry object acts as a collection of objects. 
+A registry object acts as a collection of objects.
 `ServiceRegistry` allows you to store objects which implement a specific interface.
 
 ### ServiceRegistry

@@ -4,7 +4,7 @@
     </a>
 </p>
 
-<h1 align="center">Theme Bundle</h1>
+<h1 align="center">Registry Component</h1>
 
 <p align="center">Registry for services.</p>
 
