@@ -35,6 +35,17 @@ final class PrioritizedServiceRegistrySpec extends ObjectBehavior
         $this->all()->shouldIterateAs([]);
     }
 
+    function it_keeps_fifo_order_for_registered_services(
+        SampleServiceInterface $serviceOne,
+        SampleServiceInterface $serviceTwo
+    ): void {
+        $this->register($serviceOne);
+        $this->register($serviceTwo);
+
+        $this->all()->shouldHaveCount(2);
+        $this->all()->shouldIterateAs([$serviceOne, $serviceTwo]);
+    }
+
     function it_registers_services_in_the_correct_prioritized_order(
         SampleServiceInterface $serviceOne,
         SampleServiceInterface $serviceTwo,
