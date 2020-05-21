@@ -16,7 +16,7 @@ namespace Sylius\Component\Registry;
 final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInterface
 {
     /**
-     * @psalm-var list<array{service: object, priority: int}>
+     * @psalm-var array<int, array{service: object, priority: int}>
      *
      * @var array
      */
@@ -51,6 +51,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
     public function all(): iterable
     {
         if ($this->sorted === false) {
+            /** @psalm-suppress InvalidPassByReference Doing PHP magic, it works this way */
             array_multisort(array_column($this->registry, 'priority'), \SORT_DESC, $this->registry);
 
             $this->sorted = true;

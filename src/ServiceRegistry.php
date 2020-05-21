@@ -18,7 +18,11 @@ namespace Sylius\Component\Registry;
  */
 class ServiceRegistry implements ServiceRegistryInterface
 {
-    /** @var array */
+    /**
+     * @psalm-var array<string, object>
+     *
+     * @var object[]
+     */
     private $services = [];
 
     /**
@@ -56,10 +60,6 @@ class ServiceRegistry implements ServiceRegistryInterface
     {
         if ($this->has($identifier)) {
             throw new ExistingServiceException($this->context, $identifier);
-        }
-
-        if (!is_object($service)) {
-            throw new \InvalidArgumentException(sprintf('%s needs to be an object, %s given.', ucfirst($this->context), gettype($service)));
         }
 
         if (!$service instanceof $this->className) {

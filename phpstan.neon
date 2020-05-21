@@ -1,5 +1,0 @@
-includes:
-    - vendor/proget-hq/phpstan-phpspec/extension.neon
-
-parameters:
-    specDir: 'spec/'
