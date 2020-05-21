@@ -45,9 +45,6 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         $this->context = $context;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function all(): iterable
     {
         if ($this->sorted === false) {
@@ -62,9 +59,6 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function register($service, int $priority = 0): void
     {
         $this->assertServiceHaveType($service);
@@ -73,9 +67,6 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         $this->sorted = false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unregister($service): void
     {
         if (!$this->has($service)) {
@@ -94,9 +85,6 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function has($service): bool
     {
         $this->assertServiceHaveType($service);
@@ -110,10 +98,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         return false;
     }
 
-    /**
-     * @param object $service
-     */
-    private function assertServiceHaveType($service): void
+    private function assertServiceHaveType(object $service): void
     {
         if (!$service instanceof $this->interface) {
             throw new \InvalidArgumentException(sprintf(

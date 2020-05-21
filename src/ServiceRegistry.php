@@ -45,17 +45,11 @@ class ServiceRegistry implements ServiceRegistryInterface
         $this->context = $context;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function all(): array
     {
         return $this->services;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function register(string $identifier, $service): void
     {
         if ($this->has($identifier)) {
@@ -71,9 +65,6 @@ class ServiceRegistry implements ServiceRegistryInterface
         $this->services[$identifier] = $service;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unregister(string $identifier): void
     {
         if (!$this->has($identifier)) {
@@ -83,18 +74,12 @@ class ServiceRegistry implements ServiceRegistryInterface
         unset($this->services[$identifier]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function has(string $identifier): bool
     {
         return isset($this->services[$identifier]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get(string $identifier)
+    public function get(string $identifier): object
     {
         if (!$this->has($identifier)) {
             throw new NonExistingServiceException($this->context, $identifier, array_keys($this->services));
