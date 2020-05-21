@@ -14,12 +14,18 @@ declare(strict_types=1);
 namespace Sylius\Component\Registry;
 
 use Webmozart\Assert\Assert;
-use Zend\Stdlib\PriorityQueue;
 
 final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInterface
 {
-    /** @var PriorityQueue */
-    private $services;
+    /**
+     * @psalm-var list<array{service: object, priority: int}>
+     *
+     * @var array
+     */
+    private $registry = [];
+
+    /** @var bool */
+    private $sorted = true;
 
     /**
      * Interface which is required by all services.
@@ -38,7 +44,6 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
     public function __construct(string $interface, string $context = 'service')
     {
         $this->interface = $interface;
-        $this->services = new PriorityQueue();
         $this->context = $context;
     }
 
@@ -47,8 +52,14 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
      */
     public function all(): iterable
     {
-        foreach ($this->services as $service) {
-            yield $service;
+        if ($this->sorted === false) {
+            array_multisort(array_column($this->registry, 'priority'), \SORT_DESC, $this->registry);
+
+            $this->sorted = true;
+        }
+
+        foreach ($this->registry as $record) {
+            yield $record['service'];
         }
     }
 
@@ -58,7 +69,9 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
     public function register($service, int $priority = 0): void
     {
         $this->assertServiceHaveType($service);
-        $this->services->insert($service, $priority);
+
+        $this->registry[] = ['service' => $service, 'priority' => $priority];
+        $this->sorted = false;
     }
 
     /**
@@ -67,10 +80,19 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
     public function unregister($service): void
     {
         if (!$this->has($service)) {
-            throw new NonExistingServiceException($this->context, gettype($service), array_keys($this->services->toArray()));
+            throw new NonExistingServiceException(
+                $this->context,
+                get_class($service),
+                array_map('get_class', array_column($this->registry, 'service'))
+            );
         }
 
-        $this->services->remove($service);
+        $this->registry = array_filter(
+            $this->registry,
+            static function (array $record) use ($service): bool {
+                return $record['service'] !== $service;
+            }
+        );
     }
 
     /**
@@ -80,7 +102,13 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
     {
         $this->assertServiceHaveType($service);
 
-        return $this->services->contains($service);
+        foreach ($this->registry as $record) {
+            if ($record['service'] === $service) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
