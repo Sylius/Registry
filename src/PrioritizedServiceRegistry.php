@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Registry;
 
-use Webmozart\Assert\Assert;
-
 final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInterface
 {
     /**
@@ -116,10 +114,13 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
      */
     private function assertServiceHaveType($service): void
     {
-        Assert::isInstanceOf(
-            $service,
-            $this->interface,
-            $this->context . ' needs to implement "%2$s", "%s" given.'
-        );
+        if (!$service instanceof $this->interface) {
+            throw new \InvalidArgumentException(sprintf(
+                '%s needs to implements "%s", "%s" given.',
+                $this->context,
+                $this->interface,
+                get_class($service)
+            ));
+        }
     }
 }
