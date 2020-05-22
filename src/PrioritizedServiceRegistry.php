@@ -13,13 +13,24 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Registry;
 
-use Webmozart\Assert\Assert;
-use Zend\Stdlib\PriorityQueue;
-
 final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInterface
 {
-    /** @var PriorityQueue */
-    private $services;
+    /**
+     * @psalm-var array<int, array{service: object, priority: int}>
+     *
+     * @var array
+     */
+    private $registry = [];
+
+    /**
+     * @psalm-var array<int, array{service: object, priority: int}>
+     *
+     * @var array
+     */
+    private $sortedRegistry = [];
+
+    /** @var bool */
+    private $sorted = true;
 
     /**
      * Interface which is required by all services.
@@ -38,60 +49,73 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
     public function __construct(string $interface, string $context = 'service')
     {
         $this->interface = $interface;
-        $this->services = new PriorityQueue();
         $this->context = $context;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function all(): iterable
     {
-        foreach ($this->services as $service) {
-            yield $service;
+        if ($this->sorted === false) {
+            $this->sortedRegistry = array_reverse($this->registry);
+
+            /** @psalm-suppress InvalidPassByReference Doing PHP magic, it works this way */
+            array_multisort(array_column($this->sortedRegistry, 'priority'), \SORT_DESC, $this->sortedRegistry);
+
+            $this->sorted = true;
+        }
+
+        foreach ($this->sortedRegistry as $record) {
+            yield $record['service'];
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function register($service, int $priority = 0): void
     {
         $this->assertServiceHaveType($service);
-        $this->services->insert($service, $priority);
+
+        $this->registry[] = ['service' => $service, 'priority' => $priority];
+        $this->sorted = false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unregister($service): void
     {
         if (!$this->has($service)) {
-            throw new NonExistingServiceException($this->context, gettype($service), array_keys($this->services->toArray()));
+            throw new NonExistingServiceException(
+                $this->context,
+                get_class($service),
+                array_map('get_class', array_column($this->registry, 'service'))
+            );
         }
 
-        $this->services->remove($service);
+        $this->registry = array_filter(
+            $this->registry,
+            static function (array $record) use ($service): bool {
+                return $record['service'] !== $service;
+            }
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function has($service): bool
     {
         $this->assertServiceHaveType($service);
 
-        return $this->services->contains($service);
+        foreach ($this->registry as $record) {
+            if ($record['service'] === $service) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    /**
-     * @param object $service
-     */
-    private function assertServiceHaveType($service): void
+    private function assertServiceHaveType(object $service): void
     {
-        Assert::isInstanceOf(
-            $service,
-            $this->interface,
-            $this->context . ' needs to implement "%2$s", "%s" given.'
-        );
+        if (!$service instanceof $this->interface) {
+            throw new \InvalidArgumentException(sprintf(
+                '%s needs to implements "%s", "%s" given.',
+                $this->context,
+                $this->interface,
+                get_class($service)
+            ));
+        }
     }
 }

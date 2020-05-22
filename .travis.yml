@@ -3,6 +3,7 @@ language: php
 php:
     - 7.2
     - 7.3
+    - 7.4
 
 cache:
     directories:
@@ -12,11 +13,11 @@ before_install:
     - phpenv config-rm xdebug.ini || true
 
 install:
-    - composer update --prefer-dist
+    - composer update
 
 script:
     - composer validate --strict
 
     - composer analyse
 
-    - vendor/bin/phpspec run
+    - composer test

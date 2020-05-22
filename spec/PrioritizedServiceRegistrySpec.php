@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace spec\Sylius\Component\Registry;
 
-require_once __DIR__ . '/Fixture/SampleServiceInterface.php';
-
 use PhpSpec\ObjectBehavior;
 use spec\Sylius\Component\Registry\Fixture\SampleServiceInterface;
 use Sylius\Component\Registry\NonExistingServiceException;
@@ -35,6 +33,17 @@ final class PrioritizedServiceRegistrySpec extends ObjectBehavior
     function it_initializes_services_priority_queue_by_default(): void
     {
         $this->all()->shouldIterateAs([]);
+    }
+
+    function it_keeps_fifo_order_for_registered_services(
+        SampleServiceInterface $serviceOne,
+        SampleServiceInterface $serviceTwo
+    ): void {
+        $this->register($serviceOne);
+        $this->register($serviceTwo);
+
+        $this->all()->shouldHaveCount(2);
+        $this->all()->shouldIterateAs([$serviceOne, $serviceTwo]);
     }
 
     function it_registers_services_in_the_correct_prioritized_order(

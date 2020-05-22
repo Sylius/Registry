@@ -20,16 +20,12 @@
         }
     ],
     "require": {
-        "php": "^7.2",
-
-        "webmozart/assert": "^1.0",
-        "zendframework/zend-stdlib": "^3.1"
+        "php": "^7.2"
     },
     "require-dev": {
-        "phpspec/phpspec": "^5.0",
-        "phpstan/phpstan-shim": "^0.10",
-        "proget-hq/phpstan-phpspec": "^0.1.1",
-        "sylius-labs/coding-standard": "^3.0"
+        "phpspec/phpspec": "^6.1",
+        "sylius-labs/coding-standard": "^3.1",
+        "vimeo/psalm": "3.11.4"
     },
     "autoload": {
         "psr-4": { "Sylius\\Component\\Registry\\": "src/" }
@@ -39,7 +35,14 @@
     },
     "scripts": {
         "analyse": [
-            "@php vendor/bin/phpstan analyse --ansi -c phpstan.neon -l max spec src"
+            "vendor/bin/ecs check spec src",
+            "vendor/bin/psalm"
+        ],
+        "fix": [
+            "vendor/bin/ecs check spec src --fix"
+        ],
+        "test": [
+            "vendor/bin/phpspec run --ansi --no-interaction"
         ]
     },
     "extra": {
