@@ -22,13 +22,6 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
      */
     private $registry = [];
 
-    /**
-     * @psalm-var array<int, array{service: object, priority: int}>
-     *
-     * @var array
-     */
-    private $sortedRegistry = [];
-
     /** @var bool */
     private $sorted = true;
 
@@ -55,15 +48,19 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
     public function all(): iterable
     {
         if ($this->sorted === false) {
-            $this->sortedRegistry = array_reverse($this->registry);
-
             /** @psalm-suppress InvalidPassByReference Doing PHP magic, it works this way */
-            array_multisort(array_column($this->sortedRegistry, 'priority'), \SORT_DESC, $this->sortedRegistry);
+            array_multisort(
+                array_column($this->registry, 'priority'),
+                \SORT_DESC,
+                array_keys($this->registry),
+                \SORT_ASC,
+                $this->registry
+            );
 
             $this->sorted = true;
         }
 
-        foreach ($this->sortedRegistry as $record) {
+        foreach ($this->registry as $record) {
             yield $record['service'];
         }
     }
