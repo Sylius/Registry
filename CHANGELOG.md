@@ -1,5 +1,10 @@
 ## CHANGELOG FOR `1.5.x`
 
+### v1.5.1 (2020-05-26)
+
+### Fixed
+- [#15](https://github.com/Sylius/Registry/issues/15) Keep FIFO order for prioritized registry ([@pamil](https://github.com/pamil))
+
 ### v1.5.0 (2020-05-24)
 
 - [#13](https://github.com/Sylius/Registry/issues/13) Fix installation instruction ([@diimpp](https://github.com/diimpp))
