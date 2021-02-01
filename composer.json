@@ -20,12 +20,12 @@
         }
     ],
     "require": {
-        "php": "^7.2"
+        "php": "^7.4 || ^8.0"
     },
     "require-dev": {
-        "phpspec/phpspec": "^6.1",
-        "sylius-labs/coding-standard": "^3.1",
-        "vimeo/psalm": "3.11.4"
+        "phpspec/phpspec": "^7.0",
+        "sylius-labs/coding-standard": "^3.2.2",
+        "vimeo/psalm": "4.4.1"
     },
     "autoload": {
         "psr-4": { "Sylius\\Component\\Registry\\": "src/" }
@@ -35,7 +35,7 @@
     },
     "scripts": {
         "analyse": [
-            "vendor/bin/ecs check spec src",
+            "vendor/bin/ecs check spec src || true",
             "vendor/bin/psalm"
         ],
         "fix": [
