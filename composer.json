@@ -20,7 +20,7 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0"
+        "php": "^8.0"
     },
     "require-dev": {
         "phpspec/phpspec": "^7.0",
